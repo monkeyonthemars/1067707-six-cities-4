@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов» [![Build status][travis-image]][travis-url]
 
 * Студент: [Сергей Павлов](https://up.htmlacademy.ru/react/4/user/1067707).
-* Наставник: `Неизвестно`.
+* Наставник: [Кексобот](https://htmlacademy.ru/).
 
 ---
 
