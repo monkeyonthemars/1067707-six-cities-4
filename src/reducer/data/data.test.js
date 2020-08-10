@@ -1,16 +1,16 @@
-import {uniqueCities, SortType} from '../../const.js';
+import {SortType} from '../../const.js';
 import {reducer, ActionCreator, ActionType} from './data.js';
 import * as mocks from '../../mocks/offers-test.js';
-import {tagOfferToFavorites} from '../../utils.js';
 
 const DEFAULT_CITY_INDEX = 0;
 const DEFAULT_RATING = 5;
 
 it(`Reducer without additional parameters should return initial state`, () => {
   expect(reducer(void 0, {})).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+    cities: [],
+    currentCity: {},
     currentOffers: [],
+    currentCities: [],
     offers: [],
     currentOffer: {},
     currentComments: [],
@@ -18,7 +18,8 @@ it(`Reducer without additional parameters should return initial state`, () => {
     currentSortType: SortType.POPULAR,
     favorites: [],
     review: ``,
-    rating: 0
+    rating: 0,
+    isNewReviewError: false,
   });
 });
 
@@ -26,9 +27,10 @@ it(`Reducer should change current city`, () => {
   expect(
       reducer(
           {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+            cities: [],
+            currentCity: {},
             currentOffers: [],
+            currentCities: [],
             offers: [],
             currentOffer: {},
             currentComments: [],
@@ -36,17 +38,19 @@ it(`Reducer should change current city`, () => {
             currentSortType: SortType.POPULAR,
             favorites: [],
             review: ``,
-            rating: 0
+            rating: 0,
+            isNewReviewError: false,
           },
           {
             type: ActionType.CHANGE_CITY,
-            payload: uniqueCities[2],
+            payload: mocks.cities[2],
           }
       )
   ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[2],
+    cities: [],
+    currentCity: mocks.cities[2],
     currentOffers: [],
+    currentCities: [],
     offers: [],
     currentOffer: {},
     currentComments: [],
@@ -54,7 +58,8 @@ it(`Reducer should change current city`, () => {
     currentSortType: SortType.POPULAR,
     favorites: [],
     review: ``,
-    rating: 0
+    rating: 0,
+    isNewReviewError: false,
   });
 });
 
@@ -62,9 +67,10 @@ it(`Reducer should load offers`, () => {
   expect(
       reducer(
           {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+            cities: [],
+            currentCity: {},
             currentOffers: [],
+            currentCities: [],
             offers: [],
             currentOffer: {},
             currentComments: [],
@@ -72,7 +78,8 @@ it(`Reducer should load offers`, () => {
             currentSortType: SortType.POPULAR,
             favorites: [],
             review: ``,
-            rating: 0
+            rating: 0,
+            isNewReviewError: false,
           },
           {
             type: ActionType.LOAD_OFFERS,
@@ -80,9 +87,10 @@ it(`Reducer should load offers`, () => {
           }
       )
   ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+    cities: [],
+    currentCity: {},
     currentOffers: [],
+    currentCities: [],
     offers: mocks.rentalOffers,
     currentOffer: {},
     currentComments: [],
@@ -90,43 +98,8 @@ it(`Reducer should load offers`, () => {
     currentSortType: SortType.POPULAR,
     favorites: [],
     review: ``,
-    rating: 0
-  });
-});
-
-it(`Reducer should add to favorites`, () => {
-  expect(
-      reducer(
-          {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
-            currentOffers: [],
-            offers: mocks.rentalOffers,
-            currentOffer: {},
-            currentComments: [],
-            currentNearbyOffers: [],
-            currentSortType: SortType.POPULAR,
-            favorites: [],
-            review: ``,
-            rating: 0
-          },
-          {
-            type: ActionType.ADD_TO_FAVORITES,
-            payload: 0,
-          }
-      )
-  ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
-    currentOffers: [],
-    offers: tagOfferToFavorites(mocks.rentalOffers, 0),
-    currentOffer: {},
-    currentComments: [],
-    currentNearbyOffers: [],
-    currentSortType: SortType.POPULAR,
-    favorites: [],
-    review: ``,
-    rating: 0
+    rating: 0,
+    isNewReviewError: false,
   });
 });
 
@@ -134,9 +107,10 @@ it(`Reducer should set current offer`, () => {
   expect(
       reducer(
           {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+            cities: [],
+            currentCity: {},
             currentOffers: mocks.rentalOffers,
+            currentcities: [],
             offers: [],
             currentOffer: {},
             currentComments: [],
@@ -144,7 +118,8 @@ it(`Reducer should set current offer`, () => {
             currentSortType: SortType.POPULAR,
             favorites: [],
             review: ``,
-            rating: 0
+            rating: 0,
+            isNewReviewError: false,
           },
           {
             type: ActionType.SET_CURRENT_OFFER,
@@ -152,9 +127,10 @@ it(`Reducer should set current offer`, () => {
           }
       )
   ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+    cities: [],
+    currentCity: {},
     currentOffers: mocks.rentalOffers,
+    currentcities: [],
     offers: [],
     currentOffer: mocks.rentalOffers[0],
     currentComments: [],
@@ -162,7 +138,8 @@ it(`Reducer should set current offer`, () => {
     currentSortType: SortType.POPULAR,
     favorites: [],
     review: ``,
-    rating: 0
+    rating: 0,
+    isNewReviewError: false,
   });
 });
 
@@ -170,9 +147,10 @@ it(`Reducer should load comments`, () => {
   expect(
       reducer(
           {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+            cities: [],
+            currentCity: {},
             currentOffers: [],
+            currentCities: [],
             offers: [],
             currentOffer: {},
             currentComments: [],
@@ -180,7 +158,8 @@ it(`Reducer should load comments`, () => {
             currentSortType: SortType.POPULAR,
             favorites: [],
             review: ``,
-            rating: 0
+            rating: 0,
+            isNewReviewError: false,
           },
           {
             type: ActionType.LOAD_COMMENTS,
@@ -188,9 +167,10 @@ it(`Reducer should load comments`, () => {
           }
       )
   ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+    cities: [],
+    currentCity: {},
     currentOffers: [],
+    currentCities: [],
     offers: [],
     currentOffer: {},
     currentComments: mocks.comments,
@@ -198,7 +178,8 @@ it(`Reducer should load comments`, () => {
     currentSortType: SortType.POPULAR,
     favorites: [],
     review: ``,
-    rating: 0
+    rating: 0,
+    isNewReviewError: false,
   });
 });
 
@@ -206,9 +187,10 @@ it(`Reducer should load nearby offers`, () => {
   expect(
       reducer(
           {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+            cities: [],
+            currentCity: {},
             currentOffers: [],
+            currentCities: [],
             offers: [],
             currentOffer: {},
             currentComments: [],
@@ -216,7 +198,8 @@ it(`Reducer should load nearby offers`, () => {
             currentSortType: SortType.POPULAR,
             favorites: [],
             review: ``,
-            rating: 0
+            rating: 0,
+            isNewReviewError: false,
           },
           {
             type: ActionType.LOAD_NEARBY_OFFERS,
@@ -224,9 +207,10 @@ it(`Reducer should load nearby offers`, () => {
           }
       )
   ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+    cities: [],
+    currentCity: {},
     currentOffers: [],
+    currentCities: [],
     offers: [],
     currentOffer: {},
     currentComments: [],
@@ -234,7 +218,8 @@ it(`Reducer should load nearby offers`, () => {
     currentSortType: SortType.POPULAR,
     favorites: [],
     review: ``,
-    rating: 0
+    rating: 0,
+    isNewReviewError: false,
   });
 });
 
@@ -242,9 +227,10 @@ it(`Reducer should set current sort type`, () => {
   expect(
       reducer(
           {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+            cities: [],
+            currentCity: {},
             currentOffers: [],
+            currentCities: [],
             offers: [],
             currentOffer: {},
             currentComments: [],
@@ -252,7 +238,8 @@ it(`Reducer should set current sort type`, () => {
             currentSortType: SortType.POPULAR,
             favorites: [],
             review: ``,
-            rating: 0
+            rating: 0,
+            isNewReviewError: false,
           },
           {
             type: ActionType.SET_CURRENT_SORT_TYPE,
@@ -260,9 +247,10 @@ it(`Reducer should set current sort type`, () => {
           }
       )
   ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+    cities: [],
+    currentCity: {},
     currentOffers: [],
+    currentCities: [],
     offers: [],
     currentOffer: {},
     currentComments: [],
@@ -270,7 +258,8 @@ it(`Reducer should set current sort type`, () => {
     currentSortType: SortType.TOP_RATED_FIRST,
     favorites: [],
     review: ``,
-    rating: 0
+    rating: 0,
+    isNewReviewError: false,
   });
 });
 
@@ -278,9 +267,10 @@ it(`Reducer should load favorites`, () => {
   expect(
       reducer(
           {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+            cities: [],
+            currentCity: {},
             currentOffers: [],
+            currentCities: [],
             offers: [],
             currentOffer: {},
             currentComments: [],
@@ -288,7 +278,8 @@ it(`Reducer should load favorites`, () => {
             currentSortType: SortType.POPULAR,
             favorites: [],
             review: ``,
-            rating: 0
+            rating: 0,
+            isNewReviewError: false,
           },
           {
             type: ActionType.LOAD_FAVORITES,
@@ -296,9 +287,10 @@ it(`Reducer should load favorites`, () => {
           }
       )
   ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+    cities: [],
+    currentCity: {},
     currentOffers: [],
+    currentCities: [],
     offers: [],
     currentOffer: {},
     currentComments: [],
@@ -306,7 +298,8 @@ it(`Reducer should load favorites`, () => {
     currentSortType: SortType.POPULAR,
     favorites: mocks.rentalOffers,
     review: ``,
-    rating: 0
+    rating: 0,
+    isNewReviewError: false,
   });
 });
 
@@ -314,9 +307,10 @@ it(`Reducer should set current review`, () => {
   expect(
       reducer(
           {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+            cities: [],
+            currentCity: {},
             currentOffers: [],
+            currentCities: [],
             offers: [],
             currentOffer: {},
             currentComments: [],
@@ -324,7 +318,8 @@ it(`Reducer should set current review`, () => {
             currentSortType: SortType.POPULAR,
             favorites: [],
             review: ``,
-            rating: 0
+            rating: 0,
+            isNewReviewError: false,
           },
           {
             type: ActionType.SET_CURRENT_REVIEW,
@@ -332,9 +327,10 @@ it(`Reducer should set current review`, () => {
           }
       )
   ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+    cities: [],
+    currentCity: {},
     currentOffers: [],
+    currentCities: [],
     offers: [],
     currentOffer: {},
     currentComments: [],
@@ -342,7 +338,8 @@ it(`Reducer should set current review`, () => {
     currentSortType: SortType.POPULAR,
     favorites: [],
     review: `Test review`,
-    rating: 0
+    rating: 0,
+    isNewReviewError: false,
   });
 });
 
@@ -350,9 +347,10 @@ it(`Reducer should set current rating`, () => {
   expect(
       reducer(
           {
-            cities: uniqueCities,
-            currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+            cities: [],
+            currentCity: {},
             currentOffers: [],
+            currentCities: [],
             offers: [],
             currentOffer: {},
             currentComments: [],
@@ -360,7 +358,8 @@ it(`Reducer should set current rating`, () => {
             currentSortType: SortType.POPULAR,
             favorites: [],
             review: ``,
-            rating: 0
+            rating: 0,
+            isNewReviewError: false,
           },
           {
             type: ActionType.SET_CURRENT_RATING,
@@ -368,9 +367,10 @@ it(`Reducer should set current rating`, () => {
           }
       )
   ).toEqual({
-    cities: uniqueCities,
-    currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+    cities: [],
+    currentCity: {},
     currentOffers: [],
+    currentCities: [],
     offers: [],
     currentOffer: {},
     currentComments: [],
@@ -378,15 +378,16 @@ it(`Reducer should set current rating`, () => {
     currentSortType: SortType.POPULAR,
     favorites: [],
     review: ``,
-    rating: 3
+    rating: 3,
+    isNewReviewError: false,
   });
 });
 
 describe(`Action creators work correctly`, () => {
   it(`Action creator for change city returns correct action`, () => {
-    expect(ActionCreator.changeCity(uniqueCities[DEFAULT_CITY_INDEX])).toEqual({
+    expect(ActionCreator.changeCity(mocks.cities[DEFAULT_CITY_INDEX])).toEqual({
       type: ActionType.CHANGE_CITY,
-      payload: uniqueCities[DEFAULT_CITY_INDEX]
+      payload: mocks.cities[DEFAULT_CITY_INDEX]
     });
   });
 

@@ -19,6 +19,7 @@ const FavoriteCard = (props) => {
     onFavoriteClick,
     onMouseEnter,
     onMouseLeave,
+    offers
   } = props;
 
   const markElement = isPremium ?
@@ -63,7 +64,7 @@ const FavoriteCard = (props) => {
             </span>
           </div>
           <button className={bookmarkClass} type="button" onClick={() => {
-            onFavoriteClick(id, bookmarkStatus);
+            onFavoriteClick(offers, id, bookmarkStatus);
           }}>
             <svg
               className="place-card__bookmark-icon"

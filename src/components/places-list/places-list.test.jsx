@@ -13,6 +13,7 @@ it(`<PlacesList /> should render correctly`, () => {
           onFavoriteClick={() => {}}
           onMouseEnter={() => {}}
           onMouseLeave={() => {}}
+          offers={[]}
         />
       </MemoryRouter>
   ).toJSON();

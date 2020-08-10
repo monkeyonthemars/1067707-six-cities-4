@@ -30,6 +30,8 @@ it(`Handler should get data on favorite click`, () => {
         isSending={false}
         review={``}
         rating={0}
+        offers={[]}
+        isNewReviewError={false}
       />
   );
   const bookmark = property.find(`.property__bookmark-button`);

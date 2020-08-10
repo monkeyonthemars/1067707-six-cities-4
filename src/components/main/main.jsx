@@ -14,10 +14,10 @@ const Main = (props) => {
     authorizationStatus,
     email,
     currentOffers,
+    currentCities,
     onFavoriteClick,
     onRentalTitleClick,
     currentCity,
-    cities,
     onCityClick,
     onMouseEnter,
     onMouseLeave,
@@ -25,7 +25,8 @@ const Main = (props) => {
     activePlaceCard,
     isActiveMenu,
     onSortMenuClick,
-    currentSortType
+    currentSortType,
+    offers
   } = props;
 
   return authorizationStatus === AuthorizationStatus.NO_ACCESS
@@ -41,7 +42,7 @@ const Main = (props) => {
           <div className="tabs">
             <section className="locations container">
               <CitiesList
-                cities={cities}
+                cities={currentCities}
                 currentCity={currentCity}
                 onCityClick={onCityClick}
               />
@@ -71,6 +72,7 @@ const Main = (props) => {
                       onFavoriteClick={onFavoriteClick}
                       onMouseEnter={onMouseEnter}
                       onMouseLeave={onMouseLeave}
+                      offers={offers}
                     />
 
                   </div>
@@ -112,6 +114,8 @@ Main.propTypes = {
   isActiveMenu: propTypes.isActiveMenu,
   onSortMenuClick: propTypes.onSortMenuClick,
   currentSortType: propTypes.currentSortType,
+  currentCities: propTypes.currentCities,
+  offers: propTypes.offers,
 };
 
 export default Main;

@@ -16,6 +16,7 @@ it(`<Favorites /> should render correctly`, () => {
           onMouseLeave={() => {}}
           authorizationStatus={AuthorizationStatus.NO_AUTH}
           email={mocks.email}
+          offers={[]}
         />
       </MemoryRouter>
   ).toJSON();

@@ -22,6 +22,7 @@ it(`<FavoriteCard /> should render correctly`, () => {
           onRentalTitleClick={() => {}}
           onMouseEnter={() => {}}
           onMouseLeave={() => {}}
+          offers={[]}
         />
       </MemoryRouter>
   ).toJSON();

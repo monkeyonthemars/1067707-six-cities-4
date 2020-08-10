@@ -3,12 +3,14 @@ import {extend} from '../../utils.js';
 
 const initialState = {
   authorizationStatus: AuthorizationStatus.NO_AUTH,
-  email: ``
+  email: ``,
+  isLoginError: false
 };
 
 const ActionType = {
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
-  SET_AUTH_EMAIL: `SET_AUTH_EMAIL`
+  SET_AUTH_EMAIL: `SET_AUTH_EMAIL`,
+  SET_IS_LOGIN_ERROR: `SET_IS_LOGIN_ERROR`,
 };
 
 const ActionCreator = {
@@ -25,6 +27,13 @@ const ActionCreator = {
       payload: email,
     };
   },
+
+  setIsLoginError: (status) => {
+    return {
+      type: ActionType.SET_IS_LOGIN_ERROR,
+      payload: status,
+    };
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,23 +46,39 @@ const reducer = (state = initialState, action) => {
       return extend(state, {
         email: action.payload,
       });
+    case ActionType.SET_IS_LOGIN_ERROR:
+      return extend(state, {
+        isLoginError: action.payload,
+      });
   }
 
   return state;
 };
 
 const Operation = {
+  checkAuth: () => (dispatch, getState, api) => {
+    return api.get(`/login`)
+      .then((response) => {
+        dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
+        dispatch(ActionCreator.setAuthEmail(response.data.email));
+      })
+      .catch((err) => {
+        throw err;
+      });
+  },
+
   login: (authData) => (dispatch, getState, api) => {
     return api.post(`/login`, {
       email: authData.login,
       password: authData.password,
     })
       .then(() => {
+        dispatch(ActionCreator.setIsLoginError(false));
         dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
         dispatch(ActionCreator.setAuthEmail(authData.login));
       })
-      .catch((err) => {
-        throw err;
+      .catch(() => {
+        dispatch(ActionCreator.setIsLoginError(true));
       });
   }
 };

@@ -19,6 +19,7 @@ it(`Handler should get data on submit review click`, () => {
         isSending={false}
         review={``}
         rating={0}
+        isNewReviewError={false}
       />
   );
 

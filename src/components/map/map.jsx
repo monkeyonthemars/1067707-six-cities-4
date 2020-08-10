@@ -25,7 +25,8 @@ class Map extends PureComponent {
     const {
       cityCoordinates,
       currentOffers,
-      activePlaceCard
+      activePlaceCard,
+      currentOffer
     } = this.props;
 
     this._activePlaceCard = activePlaceCard;
@@ -50,6 +51,12 @@ class Map extends PureComponent {
           .marker(rentalOffer.coordinates, rentalOffer.id === this.props.activePlaceCard ? {icon: activeIcon} : {icon: dafaultIcon})
           .addTo(this.map))
     ));
+
+    if (currentOffer !== undefined) {
+      this.markerLayers.push(leaflet
+        .marker(currentOffer.coordinates, {icon: activeIcon})
+        .addTo(this.map));
+    }
   }
 
   componentDidUpdate() {
@@ -64,6 +71,12 @@ class Map extends PureComponent {
           .marker(rentalOffer.coordinates, rentalOffer.id === this.props.activePlaceCard ? {icon: activeIcon} : {icon: dafaultIcon})
           .addTo(this.map))
     ));
+
+    if (this.props.currentOffer !== undefined) {
+      this.markerLayers.push(leaflet
+        .marker(this.props.currentOffer.coordinates, {icon: activeIcon})
+        .addTo(this.map));
+    }
   }
 
   render() {
@@ -74,7 +87,8 @@ class Map extends PureComponent {
 Map.propTypes = {
   cityCoordinates: propTypes.cityCoordinates,
   currentOffers: propTypes.currentOffers,
-  activePlaceCard: propTypes.activePlaceCard
+  activePlaceCard: propTypes.activePlaceCard,
+  currentOffer: propTypes.currentOffer
 };
 
 export default Map;

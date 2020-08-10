@@ -9,6 +9,7 @@ const PlacesList = (props) => {
     onFavoriteClick,
     onMouseEnter,
     onMouseLeave,
+    offers,
   } = props;
 
   return (
@@ -30,6 +31,7 @@ const PlacesList = (props) => {
               onFavoriteClick={onFavoriteClick}
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
+              offers={offers}
             />
           </React.Fragment>
         );
@@ -44,6 +46,7 @@ PlacesList.propTypes = {
   onFavoriteClick: propTypes.onFavoriteClick,
   onMouseEnter: propTypes.onMouseEnter,
   onMouseLeave: propTypes.onMouseLeave,
+  offers: propTypes.offers,
 };
 
 export default PlacesList;

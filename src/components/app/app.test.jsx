@@ -18,6 +18,7 @@ describe(`Render App`, () => {
           email={mocks.email}
           cities={mocks.cities}
           currentCity={mocks.currentCity}
+          currentCities={mocks.cities}
           currentOffers={mocks.rentalOffers}
           onRentalTitleClick={() => {}}
           onFavoriteClick={() => {}}
@@ -41,6 +42,8 @@ describe(`Render App`, () => {
           isActiveMenu={false}
           onSortMenuClick={() => {}}
           currentSortType={SortType.POPULAR}
+          isLoginError={false}
+          isNewReviewError={false}
         />
     ).toJSON();
 

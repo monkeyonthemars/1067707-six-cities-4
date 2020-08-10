@@ -14,6 +14,7 @@ it(`<NewReviewForm /> should render correctly`, () => {
           isSending={false}
           review={``}
           rating={0}
+          isNewReviewError={false}
         />
       </MemoryRouter>
   ).toJSON();

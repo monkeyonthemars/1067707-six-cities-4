@@ -18,6 +18,7 @@ const PlaceCard = (props) => {
     onFavoriteClick,
     onMouseEnter,
     onMouseLeave,
+    offers,
   } = props;
 
   const markElement = isPremium ?
@@ -60,7 +61,7 @@ const PlaceCard = (props) => {
             <span className="place-card__price-text">/&nbsp;{priceText}</span>
           </div>
           <button className={bookmarkClass} type="button" onClick={() => {
-            onFavoriteClick(id, bookmarkStatus);
+            onFavoriteClick(offers, id, bookmarkStatus);
           }}>
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />

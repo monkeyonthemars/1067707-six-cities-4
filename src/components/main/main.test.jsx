@@ -32,6 +32,8 @@ it(`<Main /> should render correctly`, () => {
           isActiveMenu={false}
           onSortMenuClick={() => {}}
           currentSortType={SortType.POPULAR}
+          currentCities={[]}
+          offers={[]}
         />
       </Router>
   ).toJSON();

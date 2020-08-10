@@ -39,6 +39,8 @@ it(`Should titles be clicked`, () => {
           isActiveMenu={false}
           onSortMenuClick={() => {}}
           currentSortType={SortType.POPULAR}
+          currentCities={[]}
+          offers={[]}
         />
       </Router>
   );

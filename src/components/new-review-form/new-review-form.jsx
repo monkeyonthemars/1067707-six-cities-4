@@ -11,7 +11,8 @@ const NewReviewForm = (props) => {
     submitButtonDisabled,
     isSending,
     review,
-    rating
+    rating,
+    isNewReviewError
   } = props;
 
   const handleSubmit = (evt) => {
@@ -27,8 +28,8 @@ const NewReviewForm = (props) => {
   const onChangeReview = (evt) => {
     onChangeForm(
         !(rating > 0 &&
-        review.length >= ReviewsMinMaxLength.MIN_REVIEW_LENGTH &&
-        review.length <= ReviewsMinMaxLength.MAX_REVIEW_LENGTH
+        evt.target.value.length >= ReviewsMinMaxLength.MIN_REVIEW_LENGTH &&
+        evt.target.value.length <= ReviewsMinMaxLength.MAX_REVIEW_LENGTH
         ),
         evt.target.value,
         rating
@@ -58,18 +59,21 @@ const NewReviewForm = (props) => {
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
+      {isNewReviewError && (
+        <p style={{color: `red`}}>Please, check your data{` `}</p>
+      )}
       <div className="reviews__rating-form form__rating">
         <input
           className="form__rating-input visually-hidden"
           name="rating"
-          defaultValue={UserRaviewRating.rating5}
+          defaultValue={UserRaviewRating.RATING5}
           id="5-stars"
           type="radio"
           onChange={(evt) => {
             onChangeRating(evt);
           }}
           disabled={isSending}
-          checked={rating === UserRaviewRating.rating5}
+          checked={rating === UserRaviewRating.RATING5}
         />
         <label
           htmlFor="5-stars"
@@ -83,14 +87,14 @@ const NewReviewForm = (props) => {
         <input
           className="form__rating-input visually-hidden"
           name="rating"
-          defaultValue={UserRaviewRating.rating4}
+          defaultValue={UserRaviewRating.RATING4}
           id="4-stars"
           type="radio"
           onChange={(evt) => {
             onChangeRating(evt);
           }}
           disabled={isSending}
-          checked={rating === UserRaviewRating.rating4}
+          checked={rating === UserRaviewRating.RATING4}
         />
         <label
           htmlFor="4-stars"
@@ -104,14 +108,14 @@ const NewReviewForm = (props) => {
         <input
           className="form__rating-input visually-hidden"
           name="rating"
-          defaultValue={UserRaviewRating.rating3}
+          defaultValue={UserRaviewRating.RATING3}
           id="3-stars"
           type="radio"
           onChange={(evt) => {
             onChangeRating(evt);
           }}
           disabled={isSending}
-          checked={rating === UserRaviewRating.rating3}
+          checked={rating === UserRaviewRating.RATING3}
         />
         <label
           htmlFor="3-stars"
@@ -125,14 +129,14 @@ const NewReviewForm = (props) => {
         <input
           className="form__rating-input visually-hidden"
           name="rating"
-          defaultValue={UserRaviewRating.rating2}
+          defaultValue={UserRaviewRating.RATING2}
           id="2-stars"
           type="radio"
           onChange={(evt) => {
             onChangeRating(evt);
           }}
           disabled={isSending}
-          checked={rating === UserRaviewRating.rating2}
+          checked={rating === UserRaviewRating.RATING2}
         />
         <label
           htmlFor="2-stars"
@@ -146,14 +150,14 @@ const NewReviewForm = (props) => {
         <input
           className="form__rating-input visually-hidden"
           name="rating"
-          defaultValue={UserRaviewRating.rating1}
+          defaultValue={UserRaviewRating.RATING1}
           id="1-star"
           type="radio"
           onChange={(evt) => {
             onChangeRating(evt);
           }}
           disabled={isSending}
-          checked={rating === UserRaviewRating.rating1}
+          checked={rating === UserRaviewRating.RATING1}
         />
         <label
           htmlFor="1-star"
@@ -202,7 +206,8 @@ NewReviewForm.propTypes = {
   submitButtonDisabled: propTypes.submitButtonDisabled,
   isSending: propTypes.isSending,
   review: propTypes.review,
-  rating: propTypes.rating
+  rating: propTypes.rating,
+  isNewReviewError: propTypes.isNewReviewError
 };
 
 export default NewReviewForm;

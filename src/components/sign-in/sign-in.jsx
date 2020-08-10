@@ -9,7 +9,8 @@ const SignIn = (props) => {
   const {
     onSubmit,
     authorizationStatus,
-    email
+    email,
+    isLoginError
   } = props;
 
   const loginRef = createRef();
@@ -37,6 +38,9 @@ const SignIn = (props) => {
           <div className="page__login-container container">
             <section className="login">
               <h1 className="login__title">Sign in</h1>
+              {isLoginError && (
+                <p style={{color: `red`}}>Please, check your data{` `}</p>
+              )}
               <form className="login__form form" action="#" method="post" onSubmit={handleSubmit}>
                 <div className="login__input-wrapper form__input-wrapper">
                   <label className="visually-hidden">E-mail</label>

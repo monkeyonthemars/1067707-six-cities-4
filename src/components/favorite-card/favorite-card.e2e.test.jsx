@@ -27,6 +27,7 @@ it(`Handler should get data on hover`, () => {
         onRentalTitleClick={() => {}}
         onMouseEnter={mouseEnterHandler}
         onMouseLeave={() => {}}
+        offers={[]}
       />
   );
 
@@ -51,6 +52,7 @@ it(`Handler should get data on mouse leave`, () => {
         onRentalTitleClick={() => {}}
         onMouseEnter={() => {}}
         onMouseLeave={mouseLeaveHandler}
+        offers={[]}
       />
   );
 
@@ -75,6 +77,7 @@ it(`Handler should get data on click`, () => {
         onRentalTitleClick={rentalTitleClickHandler}
         onMouseEnter={() => {}}
         onMouseLeave={() => {}}
+        offers={[]}
       />
   );
 

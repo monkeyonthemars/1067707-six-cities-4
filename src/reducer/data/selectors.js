@@ -29,10 +29,6 @@ export const getFavorites = (state) => {
   return state[NameSpace.DATA].favorites;
 };
 
-export const getClickedOffer = (state) => {
-  return state[NameSpace.DATA].clickedOffer;
-};
-
 export const getOffers = (state) => {
   return state[NameSpace.DATA].offers;
 };
@@ -47,6 +43,10 @@ export const getCurrentReview = (state) => {
 
 export const getCurrentRating = (state) => {
   return state[NameSpace.DATA].rating;
+};
+
+export const getIsNewReviewError = (state) => {
+  return state[NameSpace.DATA].isNewReviewError;
 };
 
 export const getCurrentOffers = createSelector(
@@ -75,3 +75,7 @@ export const getCurrentOffers = createSelector(
       }
     }
 );
+
+export const getCurrentCities = (state) => {
+  return state[NameSpace.DATA].currentCities;
+};

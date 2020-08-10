@@ -25,8 +25,10 @@ it(`Handler should get data on hover`, () => {
         title={rentalOffer.title}
         type={rentalOffer.type}
         onRentalTitleClick={() => {}}
+        onFavoriteClick={() => {}}
         onMouseEnter={mouseEnterHandler}
         onMouseLeave={() => {}}
+        offers={[]}
       />
   );
 
@@ -49,8 +51,10 @@ it(`Handler should get data on mouse leave`, () => {
         title={rentalOffer.title}
         type={rentalOffer.type}
         onRentalTitleClick={() => {}}
+        onFavoriteClick={() => {}}
         onMouseEnter={() => {}}
         onMouseLeave={mouseLeaveHandler}
+        offers={[]}
       />
   );
 
@@ -73,8 +77,10 @@ it(`Handler should get data on click`, () => {
         title={rentalOffer.title}
         type={rentalOffer.type}
         onRentalTitleClick={rentalTitleClickHandler}
+        onFavoriteClick={() => {}}
         onMouseEnter={() => {}}
         onMouseLeave={() => {}}
+        offers={[]}
       />
   );
 

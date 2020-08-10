@@ -13,7 +13,8 @@ const Favorites = (props) => {
     onMouseEnter,
     onMouseLeave,
     authorizationStatus,
-    email
+    email,
+    offers
   } = props;
 
   const citiesSet = new Set(favorites.map((place) => {
@@ -53,6 +54,7 @@ const Favorites = (props) => {
                         onFavoriteClick={onFavoriteClick}
                         onMouseEnter={onMouseEnter}
                         onMouseLeave={onMouseLeave}
+                        offers={offers}
                       />
                     </React.Fragment>
                   );
@@ -83,7 +85,8 @@ Favorites.propTypes = {
   onMouseEnter: propTypes.onMouseEnter,
   onMouseLeave: propTypes.onMouseLeave,
   authorizationStatus: propTypes.authorizationStatus,
-  email: propTypes.email
+  email: propTypes.email,
+  offers: propTypes.offers,
 };
 
 export default Favorites;

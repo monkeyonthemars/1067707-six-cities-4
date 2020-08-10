@@ -1,24 +1,6 @@
 import PropTypes from 'prop-types';
 
 export const propTypes = {
-  cities: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        location: PropTypes.shape({
-          latitude: PropTypes.number.isRequired,
-          longitude: PropTypes.number.isRequired,
-          zoom: PropTypes.number.isRequired,
-        }).isRequired
-      }).isRequired
-  ).isRequired,
-  currentCity: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    location: PropTypes.shape({
-      latitude: PropTypes.number.isRequired,
-      longitude: PropTypes.number.isRequired,
-      zoom: PropTypes.number.isRequired,
-    }).isRequired
-  }).isRequired,
   currentOffer: PropTypes.shape({
     id: PropTypes.number,
     mark: PropTypes.string,
@@ -104,7 +86,7 @@ export const propTypes = {
   onSubmitReviewClick: PropTypes.func.isRequired,
   favorites: PropTypes.array.isRequired,
   cityName: PropTypes.string.isRequired,
-  offers: PropTypes.array.isRequired,
+  offers: PropTypes.array,
   onChangeNewReviewForm: PropTypes.func.isRequired,
   submitButtonDisabled: PropTypes.bool.isRequired,
   isSending: PropTypes.bool.isRequired,
@@ -114,4 +96,9 @@ export const propTypes = {
   isActiveMenu: PropTypes.bool.isRequired,
   onSortMenuClick: PropTypes.func.isRequired,
   currentSortType: PropTypes.string.isRequired,
+  isLoginError: PropTypes.bool.isRequired,
+  isNewReviewError: PropTypes.bool.isRequired,
+  currentCities: PropTypes.array.isRequired,
+  cities: PropTypes.array,
+  currentCity: PropTypes.object.isRequired,
 };

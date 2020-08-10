@@ -1,11 +1,12 @@
-import {DEFAULT_CITY_INDEX, SortType, uniqueCities} from '../../const.js';
+import {DEFAULT_CITY_INDEX, SortType} from '../../const.js';
 import {getOfferById, tagOfferToFavorites} from '../../utils.js';
 import {extend} from '../../utils.js';
 
 const initialState = {
-  cities: uniqueCities,
-  currentCity: uniqueCities[DEFAULT_CITY_INDEX],
+  cities: [],
+  currentCity: {},
   currentOffers: [],
+  currentCities: [],
   offers: [],
   currentOffer: {},
   currentComments: [],
@@ -13,12 +14,14 @@ const initialState = {
   currentSortType: SortType.POPULAR,
   favorites: [],
   review: ``,
-  rating: 0
+  rating: 0,
+  isNewReviewError: false,
 };
 
 const ActionType = {
   CHANGE_CITY: `CHANGE_CITY`,
   LOAD_OFFERS: `LOAD_OFFERS`,
+  LOAD_CITIES: `LOAD_CITIES`,
   ADD_TO_FAVORITES: `ADD_TO_FAVORITES`,
   SET_CURRENT_OFFER: `SET_CURRENT_OFFER`,
   LOAD_COMMENTS: `LOAD_COMMENTS`,
@@ -26,7 +29,8 @@ const ActionType = {
   SET_CURRENT_SORT_TYPE: `SET_CURRENT_SORT_TYPE`,
   LOAD_FAVORITES: `LOAD_FAVORITES`,
   SET_CURRENT_REVIEW: `SET_CURRENT_REVIEW`,
-  SET_CURRENT_RATING: `SET_CURRENT_RATING`
+  SET_CURRENT_RATING: `SET_CURRENT_RATING`,
+  SET_IS_NEW_REVIEW_ERROR: `SET_IS_NEW_REVIEW_ERROR`
 };
 
 const ActionCreator = {
@@ -36,6 +40,10 @@ const ActionCreator = {
   }),
   loadOffers: (offers) => ({
     type: ActionType.LOAD_OFFERS,
+    payload: offers
+  }),
+  loadCities: (offers) => ({
+    type: ActionType.LOAD_CITIES,
     payload: offers
   }),
   addToFavorites: (offerId) => ({
@@ -70,17 +78,37 @@ const ActionCreator = {
     type: ActionType.SET_CURRENT_RATING,
     payload: rating
   }),
+  setIsNewReviewError: (status) => ({
+    type: ActionType.SET_IS_NEW_REVIEW_ERROR,
+    payload: status
+  }),
 };
 
 const Operation = {
   loadOffers: () => (dispatch, getState, api) => {
     return api.get(`/hotels`)
       .then((response) => {
+
         const offers = offersAdapter(response.data);
-        const city = uniqueCities[DEFAULT_CITY_INDEX];
+        const uniqueCityNames = Array.from(new Set(
+            offers.map(function (item) {
+              return item.city.name;
+            })
+        ));
+
+        const cities = uniqueCityNames.map(function (cityName) {
+          return offers.find(function (item) {
+            return item.city.name === cityName;
+          }).city;
+        });
+
+        const city = cities[DEFAULT_CITY_INDEX];
 
         dispatch(ActionCreator.loadOffers(offers));
+        dispatch(ActionCreator.loadCities(cities));
         dispatch(ActionCreator.changeCity(city));
+        dispatch(Operation.loadFavorites());
+
       });
   },
   loadComments: (offerId) => (dispatch, getState, api) => {
@@ -104,9 +132,10 @@ const Operation = {
         dispatch(Operation.loadComments(comment.offerId));
         dispatch(ActionCreator.setCurrentReview(``));
         dispatch(ActionCreator.setCurrentRating(0));
+        dispatch(ActionCreator.setIsNewReviewError(false));
       })
-      .catch((err) => {
-        throw err;
+      .catch(() => {
+        dispatch(ActionCreator.setIsNewReviewError(true));
       });
   },
   loadFavorites: () => (dispatch, getState, api) => {
@@ -115,10 +144,10 @@ const Operation = {
         dispatch(ActionCreator.loadFavorites(offersAdapter(response.data)));
       });
   },
-  addToFavorites: (offerId, status) => (dispatch, getState, api) => {
+  addToFavorites: (offers, offerId, status) => (dispatch, getState, api) => {
     return api.post(`/favorite/${offerId}/${status}`)
       .then(() => {
-        dispatch(ActionCreator.addToFavorites(offerId));
+        dispatch(ActionCreator.addToFavorites(tagOfferToFavorites(offers, offerId)));
       })
       .catch((err) => {
         throw err;
@@ -138,9 +167,14 @@ const reducer = (state = initialState, action) => {
         offers: action.payload
       });
 
+    case ActionType.LOAD_CITIES:
+      return extend(state, {
+        currentCities: action.payload
+      });
+
     case ActionType.ADD_TO_FAVORITES:
       return extend(state, {
-        offers: tagOfferToFavorites(state.offers, action.payload)
+        offers: action.payload
       });
 
     case ActionType.SET_CURRENT_OFFER:
@@ -176,6 +210,11 @@ const reducer = (state = initialState, action) => {
     case ActionType.SET_CURRENT_RATING:
       return extend(state, {
         rating: action.payload
+      });
+
+    case ActionType.SET_IS_NEW_REVIEW_ERROR:
+      return extend(state, {
+        isNewReviewError: action.payload
       });
   }
 

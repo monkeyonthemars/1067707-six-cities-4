@@ -25,6 +25,8 @@ it(`<Property /> should render correctly`, () => {
           isSending={false}
           review={``}
           rating={0}
+          offers={[]}
+          isNewReviewError={false}
         />
       </MemoryRouter>
   ).toJSON();

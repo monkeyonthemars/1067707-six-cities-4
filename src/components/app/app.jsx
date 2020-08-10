@@ -3,12 +3,14 @@ import {Switch, Route, Router} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {propTypes} from '../../types/types.js';
 import {Operation as UserOperation} from '../../reducer/user/user.js';
+import {ActionCreator as UserActionCreator} from '../../reducer/user/user.js';
 import {ActionCreator as DataActionCreator} from '../../reducer/data/data.js';
 import {Operation as DataOperation} from '../../reducer/data/data.js';
 import {ActionCreator as OffersActionCreator} from '../../reducer/offers/offers.js';
 import {
   getCurrentCity,
   getCurrentOffers,
+  getCurrentCities,
   getCurrentOffer,
   getCurrentComments,
   getNearbyOffers,
@@ -17,9 +19,10 @@ import {
   getOffers,
   getCurrentRating,
   getCurrentReview,
-  getCurrentSortType
+  getCurrentSortType,
+  getIsNewReviewError
 } from '../../reducer/data/selectors.js';
-import {getAuthorizationStatus, getAuthorizationEmail} from '../../reducer/user/selectors.js';
+import {getAuthorizationStatus, getAuthorizationEmail, getIsLoginError} from '../../reducer/user/selectors.js';
 import {
   getActivePlaceCard,
   getSubmitButtonStatus,
@@ -49,7 +52,7 @@ const App = (props) => {
     currentNearbyOffers,
     currentComments,
     currentCity,
-    cities,
+    currentCities,
     onSortTypeClick,
     activePlaceCard,
     onSubmitReviewClick,
@@ -63,7 +66,9 @@ const App = (props) => {
     loadOfferDetails,
     isActiveMenu,
     onSortMenuClick,
-    currentSortType
+    currentSortType,
+    isLoginError,
+    isNewReviewError
   } = props;
 
   return (
@@ -75,7 +80,7 @@ const App = (props) => {
           <Main
             authorizationStatus={authorizationStatus}
             email={email}
-            cities={cities}
+            currentCities={currentCities}
             currentCity={currentCity}
             currentOffers={currentOffers}
             onFavoriteClick={onFavoriteClick}
@@ -88,6 +93,7 @@ const App = (props) => {
             isActiveMenu={isActiveMenu}
             onSortMenuClick={onSortMenuClick}
             currentSortType={currentSortType}
+            offers={offers}
           />
         </Route>
         <Route exact path={AppRoute.LOGIN}>
@@ -95,6 +101,7 @@ const App = (props) => {
             authorizationStatus={authorizationStatus}
             onSubmit={login}
             email={email}
+            isLoginError={isLoginError}
           />
         </Route>
         <Route
@@ -117,6 +124,7 @@ const App = (props) => {
 
                   authorizationStatus={authorizationStatus}
                   email={email}
+                  isLoginError={isLoginError}
 
                   onSubmitReviewClick={onSubmitReviewClick}
                   onChangeNewReviewForm={onChangeNewReviewForm}
@@ -127,8 +135,10 @@ const App = (props) => {
                   submitButtonDisabled={submitButtonDisabled}
                   isSending={isSending}
                   review={review}
-                  rating={rating
-                  }
+                  rating={rating}
+
+                  offers={offers}
+                  isNewReviewError={isNewReviewError}
                 />
               );
             }
@@ -149,6 +159,7 @@ const App = (props) => {
                 onMouseLeave={onMouseLeave}
                 authorizationStatus={authorizationStatus}
                 email={email}
+                offers={offers}
               />
             );
           }}
@@ -162,7 +173,6 @@ App.propTypes = {
   authorizationStatus: propTypes.authorizationStatus,
   login: propTypes.login,
   email: propTypes.email,
-  cities: propTypes.cities,
   currentCity: propTypes.currentCity,
   currentOffers: propTypes.currentOffers,
   currentOffer: propTypes.currentOffer,
@@ -187,6 +197,9 @@ App.propTypes = {
   isActiveMenu: propTypes.isActiveMenu,
   onSortMenuClick: propTypes.onSortMenuClick,
   currentSortType: propTypes.currentSortType,
+  isLoginError: propTypes.isLoginError,
+  isNewReviewError: propTypes.isNewReviewError,
+  currentCities: propTypes.currentCities,
 };
 
 const mapStateToProps = (state) => ({
@@ -195,6 +208,7 @@ const mapStateToProps = (state) => ({
   cities: getCities(state),
   currentCity: getCurrentCity(state),
   currentOffers: getCurrentOffers(state),
+  currentCities: getCurrentCities(state),
   currentOffer: getCurrentOffer(state),
   currentComments: getCurrentComments(state),
   currentNearbyOffers: getNearbyOffers(state),
@@ -206,13 +220,20 @@ const mapStateToProps = (state) => ({
   review: getCurrentReview(state),
   rating: getCurrentRating(state),
   isActiveMenu: getActiveStatusMenu(state),
-  currentSortType: getCurrentSortType(state)
+  currentSortType: getCurrentSortType(state),
+  isLoginError: getIsLoginError(state),
+  isNewReviewError: getIsNewReviewError(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   login(authData) {
-    dispatch(UserOperation.login(authData));
-    dispatch(DataOperation.loadFavorites());
+    const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    const testResult = reg.test(authData.login) && authData.password !== ``;
+    if (testResult) {
+      dispatch(UserOperation.login(authData));
+      dispatch(DataOperation.loadFavorites());
+    }
+    dispatch(UserActionCreator.setIsLoginError(!testResult));
   },
 
   onCityClick(city) {
@@ -224,8 +245,8 @@ const mapDispatchToProps = (dispatch) => ({
   onMouseLeave() {
     dispatch(OffersActionCreator.removeActivePlaceCard());
   },
-  onFavoriteClick(offerId, status) {
-    dispatch(DataOperation.addToFavorites(offerId, status));
+  onFavoriteClick(offers, offerId, status) {
+    dispatch(DataOperation.addToFavorites(offers, offerId, status));
     dispatch(DataOperation.loadFavorites());
   },
   onRentalTitleClick(offerId) {

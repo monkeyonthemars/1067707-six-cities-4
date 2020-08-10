@@ -4,7 +4,7 @@ import ReviewsList from '../reviews-list/reviews-list.jsx';
 import Map from '../map/map.jsx';
 import PlacesList from '../places-list/places-list.jsx';
 import NewReviewForm from '../new-review-form/new-review-form.jsx';
-import {AuthorizationStatus} from '../../const.js';
+import {AuthorizationStatus, MAX_COUNT_PHOTOS} from '../../const.js';
 import Header from '../header/header.jsx';
 
 const Property = (props) => {
@@ -25,7 +25,9 @@ const Property = (props) => {
     submitButtonDisabled,
     isSending,
     review,
-    rating
+    rating,
+    offers,
+    isNewReviewError,
   } = props;
 
   const bookmarkStatus = currentOffer.isBookmark ? `0` : `1`;
@@ -39,7 +41,7 @@ const Property = (props) => {
     : `property__avatar-wrapper user__avatar-wrapper`;
 
   const gallery = <div className="property__gallery">
-    {currentOffer.images.map((image) => {
+    {currentOffer.images.slice(0, MAX_COUNT_PHOTOS).map((image) => {
       return (
         <React.Fragment key={image}>
           <div className="property__image-wrapper">
@@ -88,7 +90,7 @@ const Property = (props) => {
                   {currentOffer.title}
                 </h1>
                 <button className={bookmarkClass} type="button" onClick={() => {
-                  onFavoriteClick(currentOffer.id, bookmarkStatus);
+                  onFavoriteClick(offers, currentOffer.id, bookmarkStatus);
                 }}>
                   <svg className="property__bookmark-icon" width={31} height={33}>
                     <use xlinkHref="#icon-bookmark" />
@@ -153,6 +155,7 @@ const Property = (props) => {
                       isSending={isSending}
                       review={review}
                       rating={rating}
+                      isNewReviewError={isNewReviewError}
                     />
                     : ``
                 }
@@ -164,6 +167,7 @@ const Property = (props) => {
               cityCoordinates={currentOffer.city.location}
               currentOffers={currentNearbyOffers}
               activePlaceCard={activePlaceCard}
+              currentOffer={currentOffer}
             />
           </section>
         </section>
@@ -204,7 +208,9 @@ Property.propTypes = {
   submitButtonDisabled: propTypes.submitButtonDisabled,
   isSending: propTypes.isSending,
   review: propTypes.review,
-  rating: propTypes.rating
+  rating: propTypes.rating,
+  offers: propTypes.offers,
+  isNewReviewError: propTypes.isNewReviewError,
 };
 
 export default Property;
