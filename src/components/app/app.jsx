@@ -39,6 +39,7 @@ import Property from '../property/property.jsx';
 import {getOfferById} from '../../utils.js';
 
 const App = (props) => {
+
   const {
     authorizationStatus,
     onRentalTitleClick,

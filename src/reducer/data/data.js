@@ -142,16 +142,15 @@ const Operation = {
     return api.get(`/favorite`)
       .then((response) => {
         dispatch(ActionCreator.loadFavorites(offersAdapter(response.data)));
-      });
+      })
+      .catch(() => {});
   },
   addToFavorites: (offers, offerId, status) => (dispatch, getState, api) => {
     return api.post(`/favorite/${offerId}/${status}`)
       .then(() => {
         dispatch(ActionCreator.addToFavorites(tagOfferToFavorites(offers, offerId)));
       })
-      .catch((err) => {
-        throw err;
-      });
+      .catch(() => {});
   },
 };
 

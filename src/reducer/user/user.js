@@ -62,8 +62,8 @@ const Operation = {
         dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
         dispatch(ActionCreator.setAuthEmail(response.data.email));
       })
-      .catch((err) => {
-        throw err;
+      .catch(() => {
+        dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH));
       });
   },
 
@@ -79,6 +79,7 @@ const Operation = {
       })
       .catch(() => {
         dispatch(ActionCreator.setIsLoginError(true));
+        dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH));
       });
   }
 };

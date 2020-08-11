@@ -11,7 +11,7 @@ const Header = (props) => {
     email
   } = props;
 
-  const authInfo = authorizationStatus === AuthorizationStatus.NO_AUTH
+  const authInfo = authorizationStatus !== AuthorizationStatus.AUTH
     ? <Link
       className="header__nav-link header__nav-link--profile"
       to={AppRoute.LOGIN}
