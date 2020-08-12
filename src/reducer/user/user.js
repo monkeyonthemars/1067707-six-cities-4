@@ -2,7 +2,7 @@ import {AuthorizationStatus} from '../../const.js';
 import {extend} from '../../utils.js';
 
 const initialState = {
-  authorizationStatus: AuthorizationStatus.NO_AUTH,
+  authorizationStatus: AuthorizationStatus.EMPTY,
   email: ``,
   isLoginError: false
 };
@@ -59,8 +59,12 @@ const Operation = {
   checkAuth: () => (dispatch, getState, api) => {
     return api.get(`/login`)
       .then((response) => {
-        dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
-        dispatch(ActionCreator.setAuthEmail(response.data.email));
+        if (response !== undefined) {
+          dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
+          dispatch(ActionCreator.setAuthEmail(response.data.email));
+        } else {
+          dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH));
+        }
       })
       .catch(() => {
         dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH));

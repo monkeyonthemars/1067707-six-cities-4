@@ -149,6 +149,7 @@ const Operation = {
     return api.post(`/favorite/${offerId}/${status}`)
       .then(() => {
         dispatch(ActionCreator.addToFavorites(tagOfferToFavorites(offers, offerId)));
+        dispatch(Operation.loadFavorites());
       })
       .catch(() => {});
   },

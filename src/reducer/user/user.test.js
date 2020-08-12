@@ -3,7 +3,7 @@ import * as mocks from '../../mocks/offers-test.js';
 
 it(`Reducer without additional parameters should return initial state`, () => {
   expect(reducer(void 0, {})).toEqual({
-    authorizationStatus: AuthorizationStatus.NO_AUTH,
+    authorizationStatus: AuthorizationStatus.EMPTY,
     email: ``,
     isLoginError: false
   });

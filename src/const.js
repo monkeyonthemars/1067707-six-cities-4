@@ -8,7 +8,8 @@ export const AppRoute = {
 export const AuthorizationStatus = {
   AUTH: `AUTH`,
   NO_AUTH: `NO_AUTH`,
-  NO_ACCESS: `NO_ACCESS`
+  NO_ACCESS: `NO_ACCESS`,
+  EMPTY: ``
 };
 
 export const Error = {
